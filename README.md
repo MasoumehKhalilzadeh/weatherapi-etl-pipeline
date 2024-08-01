@@ -1,6 +1,19 @@
 # weatherapi-etl-pipeline
 Automated Weather Data ETL Pipeline Using Apache Airflow, Python, and AWS S3
 
+## Table of Contents
+
+1. [Introduction](#introduction)
+2. [Objective](#objective)
+3. [Tools and Technologies](#tools-and-technologies)
+4. [Methodology](#methodology)
+5. [Discussion](#Discussion)
+6. [Conclusion](#conclusion)
+7. [Future Work](#future-work)
+
+
+
+
 
 ## Introduction
 
@@ -198,7 +211,7 @@ with DAG('weather_dag',
 ```
 
 
-Discussion
+## Discussion
 Data Extraction
 The pipeline begins by checking the availability of the weather API using an HttpSensor. If the API is available, the SimpleHttpOperator extracts weather data for a specified city (e.g., Portland).
 
@@ -211,10 +224,10 @@ The transformed data is saved as a CSV file in an Amazon S3 bucket. The filename
 Automation
 The entire pipeline is scheduled to run daily, ensuring that the latest weather data is continuously collected, transformed, and stored.
 
-Conclusion
+## Conclusion
 This project showcases the integration of Apache Airflow, Python, and AWS for building an automated ETL pipeline. By leveraging these technologies, we can efficiently process and store real-time weather data, providing a foundation for further analysis and application development.
 
-Future Work
+## Future Work
 Error Handling: Implement robust error handling to manage potential issues during data extraction and loading.
 Scalability: Explore the use of AWS Lambda for serverless computing to enhance scalability.
 Data Analysis: Develop additional scripts to analyze the stored weather data and generate insights.
