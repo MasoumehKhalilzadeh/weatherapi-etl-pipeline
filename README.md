@@ -181,7 +181,7 @@ def transform_load_data(task_instance):
     transformed_data_list = [transformed_data]
     df_data = pd.DataFrame(transformed_data_list)
 
-    aws_credentials = {"key": "", "secret": "", "token": ""}
+    aws_credentials = {"key": "******", "secret": "********", "token": "******"}
 
     now = datetime.now()
     dt_string = now.strftime("%d%m%Y%H%M%S")
@@ -218,13 +218,13 @@ with DAG('weather_dag',
     is_weather_api_ready = HttpSensor(
         task_id='is_weather_api_ready',
         http_conn_id='weathermap_api',
-        endpoint='/data/2.5/weather?q=Portland&APPID='
+        endpoint='/data/2.5/weather?q=insertcityname&APPID=*****************'
     )
 
     extract_weather_data = SimpleHttpOperator(
         task_id='extract_weather_data',
         http_conn_id='weathermap_api',
-        endpoint='/data/2.5/weather?q=Portland&APPID=',
+        endpoint='/data/2.5/weather?q=insertcityname&APPID=*****************',
         method='GET',
         response_filter=lambda r: json.loads(r.text),
         log_response=True
