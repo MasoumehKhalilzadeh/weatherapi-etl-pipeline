@@ -7,7 +7,16 @@ Automated Weather Data ETL Pipeline Using Apache Airflow, Python, and AWS S3
 2. [Objective](#objective)
 3. [Tools and Technologies](#tools-and-technologies)
 4. [Methodology](#methodology)
-5. [Discussion](#Discussion)
+   
+   4.1. [Setting Up the Environment](#setting-up-the-environment)
+   
+   4.2. [Configuring AWS S3](#configuring-aws-s3)
+   
+   4.3. [ETL Pipeline Design](#etl-pipeline-design)
+   
+   4.4. [Implementation](#implementation)
+   
+5. [Discussion](#discussion)
 6. [Conclusion](#conclusion)
 7. [Future Work](#future-work)
 
@@ -27,21 +36,26 @@ The objective of this project is to create an automated ETL pipeline that fetche
 
 ## Tools and Technologies
 
-Apache Airflow: To orchestrate and schedule the ETL workflow.
-Python: For data extraction, transformation, and loading.
-AWS S3: For storing the transformed data.
-Pandas: For data manipulation and transformation.
-OpenWeatherMap API: For extracting real-time weather data.
+**Apache Airflow:** To orchestrate and schedule the ETL workflow.
+
+**Python:** For data extraction, transformation, and loading.
+
+**AWS S3:** For storing the transformed data.
+
+**Pandas:** For data manipulation and transformation.
+
+**OpenWeatherMap API:** For extracting real-time weather data.
 
 
 ## Methodology
 
-4.1. Setting Up the Environment
+### Setting Up the Environment
 
-1. Installing Apache Airflow
+**Installing Apache Airflow**
+
 To install Apache Airflow, follow these steps:
 
-1 - Create a Python virtual environment:
+- Create a Python virtual environment:
 
 ```python
 python3 -m venv airflow_env
@@ -49,22 +63,21 @@ source airflow_env/bin/activate
 ```
 
 
-2- Install Apache Airflow using pip:
+- Install Apache Airflow using pip:
 
 ```python
 pip install apache-airflow
 
 ```
 
-
-3- Initialize the Airflow database:
+- Initialize the Airflow database:
 
 ```python
 airflow db init
 
 ```
 
-4 - Start the Airflow web server and scheduler:
+- Start the Airflow web server and scheduler:
 
 ```python
 airflow webserver --port 8080
@@ -72,29 +85,45 @@ airflow scheduler
 ```
 
 
-2. Configuring AWS S3
+### Configuring AWS S3
+
 Create an S3 bucket in your AWS account.
+
 Generate AWS access keys (Access Key ID and Secret Access Key) for programmatic access to the S3 bucket.
-3. ETL Pipeline Design
+
+### ETL Pipeline Design
+
 The ETL pipeline will consist of the following tasks:
 
+**ETL Pipeline Design**
+
+**1.Extract:**
+
+-Use the weather API to fetch daily data for a city
+-Schedule the data extraction using an Airflow DAG (Directed Acyclic Graph).
+
+**2.Transform:**
+
+-Clean and preprocess the extracted data.
+-Convert the data into a suitable format for analysis (e.g., CSV, JSON).
+
+**3.Load:**
+
+- Upload the transformed data to the AWS S3 bucket.
+- Ensure data is correctly stored and accessible in the S3 bucket.
+
+**HttpSensor:** To check the availability of the weather API.
+
+**SimpleHttpOperator:** To extract weather data from the API.
+
+**PythonOperator:** To transform and load the extracted data into an S3 bucket.
+
+<img width="632" alt="Screenshot 2024-08-01 155633" src="https://github.com/user-attachments/assets/008afb0c-5170-4d43-ac00-1b55b362ba6e">
 
 
-4.2. ETL Pipeline Design
-1.	Extract:
-o	Use the weather API to fetch daily data for a city
-o	Schedule the data extraction using an Airflow DAG (Directed Acyclic Graph).
-2.	Transform:
-o	Clean and preprocess the extracted data.
-o	Convert the data into a suitable format for analysis (e.g., CSV, JSON).
-3.	Load:
-o	Upload the transformed data to the AWS S3 bucket.
-o	Ensure data is correctly stored and accessible in the S3 bucket.
+### Implementation
 
-HttpSensor: To check the availability of the weather API.
-SimpleHttpOperator: To extract weather data from the API.
-PythonOperator: To transform and load the extracted data into an S3 bucket.
-4. Implementation
+
 Importing Libraries
 
 ```python
@@ -212,24 +241,34 @@ with DAG('weather_dag',
 
 
 ## Discussion
-Data Extraction
+
+**Data Extraction**
+
 The pipeline begins by checking the availability of the weather API using an HttpSensor. If the API is available, the SimpleHttpOperator extracts weather data for a specified city (e.g., Portland).
 
-Data Transformation
+**Data Transformation**
+
 The extracted data is then processed in the transform_load_data function. This involves converting temperatures from Kelvin to Fahrenheit and structuring the data into a pandas DataFrame.
 
-Data Loading
+**Data Loading**
+
 The transformed data is saved as a CSV file in an Amazon S3 bucket. The filename is timestamped to ensure uniqueness.
 
-Automation
+**Automation**
+
 The entire pipeline is scheduled to run daily, ensuring that the latest weather data is continuously collected, transformed, and stored.
 
 ## Conclusion
+
 This project showcases the integration of Apache Airflow, Python, and AWS for building an automated ETL pipeline. By leveraging these technologies, we can efficiently process and store real-time weather data, providing a foundation for further analysis and application development.
 
 ## Future Work
-Error Handling: Implement robust error handling to manage potential issues during data extraction and loading.
-Scalability: Explore the use of AWS Lambda for serverless computing to enhance scalability.
-Data Analysis: Develop additional scripts to analyze the stored weather data and generate insights.
-This ETL pipeline serves as a versatile and extendable framework, adaptable to various data sources and analytical requirements.
+
+**Error Handling:** Implement robust error handling to manage potential issues during data extraction and loading.
+
+**Scalability:** Explore the use of AWS Lambda for serverless computing to enhance scalability.
+
+**Data Analysis:** Develop additional scripts to analyze the stored weather data and generate insights.
+
+
 
